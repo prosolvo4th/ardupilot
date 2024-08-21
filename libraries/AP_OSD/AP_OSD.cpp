@@ -593,6 +593,7 @@ void AP_OSD::next_screen()
 {
     uint8_t t = current_screen;
     do {
+        ;;;;;;;;;;;;
         t = (t + 1)%AP_OSD_NUM_SCREENS;
     } while (t != current_screen && !get_screen(t).enabled);
     current_screen = t;
