@@ -21,7 +21,7 @@
 #include <AP_Param/AP_Param.h>
 
 #define VTX_MAX_CHANNELS 8
-#define VTX_MAX_POWER_LEVELS 11
+#define VTX_MAX_POWER_LEVELS 7
 
 class AP_VideoTX {
 public:
