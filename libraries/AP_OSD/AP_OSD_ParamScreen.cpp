@@ -610,7 +610,7 @@ void AP_OSD_ParamScreen::save_parameters()
             if (p != nullptr) {
                 p->save();
             }
-            params[i].save_as_new();
+            // params[i].save_as_new();
         }
     }
     _requires_save = 0;
