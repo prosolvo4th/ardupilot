@@ -189,7 +189,9 @@ bool AP_VideoTX::get_band_and_channel(uint16_t freq, VideoBand& band, uint8_t& c
 // set the current power
 void AP_VideoTX::set_configured_power_mw(uint16_t power)
 {
+
     _power_mw.set_and_save_ifchanged(power);
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "%d:_power_mw set %d", __LINE__, (int)_power_mw);
 }
 
 uint8_t AP_VideoTX::find_current_power() const

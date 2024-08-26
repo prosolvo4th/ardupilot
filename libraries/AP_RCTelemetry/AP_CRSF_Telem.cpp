@@ -819,23 +819,23 @@ void AP_CRSF_Telem::update_vtx_params()
             _vtx_dbm_update = false;
         } else if (_vtx_power_change_pending) {
             _telem.ext.command.payload[0] = AP_RCProtocol_CRSF::CRSF_COMMAND_VTX_POWER;
-            if (vtx.get_configured_power_mw() < 26) {
-                vtx.set_configured_power_mw(25);
-            } else if (vtx.get_configured_power_mw() < 201) {
-                if (vtx.get_configured_power_mw() < 101) {
-                    vtx.set_configured_power_mw(100);
-                } else {
-                    vtx.set_configured_power_mw(200);
-                }
-            } else if (vtx.get_configured_power_mw() < 501) {
-                if (vtx.get_configured_power_mw() < 401) {
-                    vtx.set_configured_power_mw(400);
-                } else {
-                    vtx.set_configured_power_mw(500);
-                }
-            } else {
-                vtx.set_configured_power_mw(800);
-            }
+            // if (vtx.get_configured_power_mw() < 26) {
+            //     vtx.set_configured_power_mw(25);
+            // } else if (vtx.get_configured_power_mw() < 201) {
+            //     if (vtx.get_configured_power_mw() < 101) {
+            //         vtx.set_configured_power_mw(100);
+            //     } else {
+            //         vtx.set_configured_power_mw(200);
+            //     }
+            // } else if (vtx.get_configured_power_mw() < 501) {
+            //     if (vtx.get_configured_power_mw() < 401) {
+            //         vtx.set_configured_power_mw(400);
+            //     } else {
+            //         vtx.set_configured_power_mw(500);
+            //     }
+            // } else {
+            //     vtx.set_configured_power_mw(800);
+            // }
             _telem.ext.command.payload[1] = vtx.get_configured_power_level();
             _vtx_dbm_update = true;
         }
