@@ -266,6 +266,10 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #if STATS_ENABLED == ENABLED
     SCHED_TASK_CLASS(AP_Stats,             &copter.g2.stats,            update,           1, 100, 171),
 #endif
+#if AP_THERMAL_ENABLED == ENABLED
+#warning "AP_THERMAL_ENABLED"
+    SCHED_TASK_CLASS(AP_Thermal,             &copter.thermal,            update,           4, 100, 172),
+#endif
 };
 
 void Copter::get_scheduler_tasks(const AP_Scheduler::Task *&tasks,

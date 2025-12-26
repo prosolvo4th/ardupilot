@@ -35,6 +35,9 @@ void Copter::init_ardupilot()
 #if AP_WINCH_ENABLED
     g2.winch.init();
 #endif
+#if AP_THERMAL_ENABLED == ENABLED
+    thermal.init();
+#endif
 
     // initialise notify system
     notify.init();

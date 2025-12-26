@@ -72,6 +72,7 @@
 #include <AC_PrecLand/AC_PrecLand_config.h>
 #include <AP_OpticalFlow/AP_OpticalFlow.h>
 #include <AP_Winch/AP_Winch_config.h>
+#include <AP_Thermal/AP_Thermal.h>
 
 // Configuration
 #include "defines.h"
