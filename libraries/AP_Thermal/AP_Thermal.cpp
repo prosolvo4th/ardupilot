@@ -34,8 +34,6 @@ void AP_Thermal::update(void)
         return;
     }
 
-    gcs().send_text(MAV_SEVERITY_INFO, "Thermal update");
-
     handle_uart_rx();
     send_dummy_byte();
 }
@@ -78,11 +76,14 @@ void AP_Thermal::handle_uart_rx(void)
 void AP_Thermal::send_dummy_byte(void)
 {
     const uint32_t now = AP_HAL::millis();
-    if (now - _last_tx_ms < 1000U) {
+    if (now - _last_tx_ms < 2000U) {
         return;
     }
 
-    _uart->write(static_cast<uint8_t>(AP_THERMAL_DUMMY_BYTE));
+    palette_counter = (palette_counter + 1) >= palette_num ? 0 : palette_counter + 1;
+    gcs().send_text(MAV_SEVERITY_INFO, "Send palette %d", palette_counter);
+
+    _uart->write(palettes[palette_counter], palette_size);
     _last_tx_ms = now;
 }
 
