@@ -21,15 +21,15 @@ public:
     uint32_t available(void) const;
     uint32_t read(uint8_t *data, uint32_t len);
     bool read_byte(uint8_t &byte);
+    void switch_palette(int8_t step);
 
 private:
     static AP_Thermal *_singleton;
 
     AP_HAL::UARTDriver *_uart = nullptr;
     ByteBuffer _rx_buffer;
-    uint32_t _last_tx_ms = 0;
 
-    int8_t palette_counter = -1;
+    int8_t palette_counter = 0;
 
     static const int8_t palette_num = 15;
     static const int8_t palette_size = 9;
@@ -52,7 +52,6 @@ private:
     };
 
     void handle_uart_rx(void);
-    void send_dummy_byte(void);
 };
 
 namespace AP {

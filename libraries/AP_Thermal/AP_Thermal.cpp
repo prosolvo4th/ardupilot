@@ -24,7 +24,6 @@ bool AP_Thermal::init(void)
         return false;
     }
 
-    _last_tx_ms = AP_HAL::millis();
     return true;
 }
 
@@ -35,7 +34,7 @@ void AP_Thermal::update(void)
     }
 
     handle_uart_rx();
-    send_dummy_byte();
+    // switch_palette();
 }
 
 uint32_t AP_Thermal::available(void) const
@@ -73,18 +72,21 @@ void AP_Thermal::handle_uart_rx(void)
     }
 }
 
-void AP_Thermal::send_dummy_byte(void)
+void AP_Thermal::switch_palette(int8_t step)
 {
-    const uint32_t now = AP_HAL::millis();
-    if (now - _last_tx_ms < 2000U) {
+    if (_uart == nullptr) {
         return;
     }
 
-    palette_counter = (palette_counter + 1) >= palette_num ? 0 : palette_counter + 1;
+    palette_counter += step;
+    if (palette_counter < 0)
+        palette_counter = palette_num - 1;
+    else if (palette_counter >= palette_num)
+        palette_counter = 0;
+    palette_counter = palette_counter % palette_num;
     gcs().send_text(MAV_SEVERITY_INFO, "Send palette %d", palette_counter);
 
     _uart->write(palettes[palette_counter], palette_size);
-    _last_tx_ms = now;
 }
 
 namespace AP {
