@@ -59,6 +59,7 @@ extern const AP_HAL::HAL& hal;
 #include <AP_VideoTX/AP_VideoTX.h>
 #include <AP_Torqeedo/AP_Torqeedo.h>
 #include <AP_Vehicle/AP_Vehicle_Type.h>
+#include <AP_Thermal/AP_Thermal.h>
 #define SWITCH_DEBOUNCE_TIME_MS  200
 
 const AP_Param::GroupInfo RC_Channel::var_info[] = {
@@ -667,6 +668,7 @@ void RC_Channel::init_aux_function(const aux_func_t ch_option, const AuxSwitchPo
     case AUX_FUNC::MAG_CAL:
     case AUX_FUNC::CAMERA_IMAGE_TRACKING:
     case AUX_FUNC::MOUNT_LRF_ENABLE:
+    case AUX_FUNC::THERMAL_SWITCH:
         break;
 
     // not really aux functions:
@@ -1217,6 +1219,19 @@ void RC_Channel::do_aux_function_fft_notch_tune(const AuxSwitchPos ch_flag)
 #endif
 }
 
+
+void RC_Channel::do_aux_function_thermal_palette_switch(const AuxSwitchPos ch_flag) {
+#if AP_THERMAL_ENABLED
+    AP_Thermal *thermal = AP::thermal();
+    int8_t step = (ch_flag == AuxSwitchPos::HIGH) ? 1 :
+        (ch_flag == AuxSwitchPos::LOW) ? -1 :
+        0;
+    if (step != 0) {
+        thermal->switch_palette(step);
+    }
+#endif
+}
+
 bool RC_Channel::run_aux_function(aux_func_t ch_option, AuxSwitchPos pos, AuxFuncTriggerSource source)
 {
 #if AP_SCRIPTING_ENABLED
@@ -1684,6 +1699,14 @@ bool RC_Channel::do_aux_function(const aux_func_t ch_option, const AuxSwitchPos 
     case AUX_FUNC::LOWEHEISER_STARTER:
         // monitored by the library itself
         break;
+
+    case AUX_FUNC::THERMAL_SWITCH: {
+#if AP_THERMAL_ENABLED
+#warning "AUX_FUNC::THERMAL_SWITCH"
+        do_aux_function_thermal_palette_switch(ch_flag);
+#endif
+        break;
+    }
 
     default:
         GCS_SEND_TEXT(MAV_SEVERITY_INFO, "Invalid channel option (%u)", (unsigned int)ch_option);
